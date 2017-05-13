@@ -10,3 +10,43 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Java build artifacts class files
+*.class
+
+# other generated files
+bin/
+gen/
+build/
+
+# Gradle stuff which I think should be ignored just now
+gradle/
+build.gradle
+gradlew
+gradlew.bat
+settings.gradle
+
+# local configuration file (for Android sdk path, etc)
+local.properties
+
+# OSX files
+.DS_Store
+
+# Eclipse project files
+.classpath
+.project
+.settings
+
+# Android Studio
+*.iml
+.idea
+.gradle
+
+
+#NDK
+obj/
+
+
+# eclipse
+.settings
+.project
