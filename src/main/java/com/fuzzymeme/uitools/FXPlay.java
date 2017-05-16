@@ -6,29 +6,24 @@ import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
 import javafx.animation.AnimationTimer;
 
-// Animation of Earth rotating around the sun. (Hello, world!)
-public class FXPlay extends Application 
-{
+public class FXPlay extends Application {
 	
 	private final int canvasHeight = 512;
 	private final int canvasWidth = 512;
 	
-	private final static Color STANDARD_BLUE = new Color(0.203, 0.5176, 0.7019, 1.0);
-    public static void main(String[] args) 
-    {
+	public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage theStage) 
-    {
+    public void start(Stage theStage) {
+    	
         theStage.setTitle( "Java FX Play" );
 
         Group root = new Group();
@@ -43,14 +38,10 @@ public class FXPlay extends Application
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
                 
-        Line line1 = new Line(256, 256, 400, 400);
-        line1.setStrokeWidth(2.3);
-        line1.setStroke(Color.GRAY);
+        Line line1 = getGraphNodeLine(256, 256, 400, 400);
         root.getChildren().add(line1);
         
-        Line line2 = new Line(256, 256, 400, 400);
-        line2.setStrokeWidth(2.3);
-        line2.setStroke(Color.GRAY);
+        Line line2 = getGraphNodeLine(256, 256, 400, 400);
         root.getChildren().add(line2);
         
         Circle c = getGraphNode();
@@ -60,6 +51,9 @@ public class FXPlay extends Application
         root.getChildren().add(c2);
         Circle c3 = getGraphNode();
         root.getChildren().add(c3);
+                
+        TextNugget textNugget = new TextNugget(40, 40, 26, 3, 14);
+        root.getChildren().add(textNugget.getGroup());
        
         final long startNanoTime = System.nanoTime();
 
@@ -75,8 +69,6 @@ public class FXPlay extends Application
                 // Clear the canvas
                 gc.clearRect(0, 0, 512,512);
                 
-                drawBackground(gc);
-                
                 c2.setCenterX(x);c2.setCenterY(y);
                 line1.setEndX(x);line1.setEndY(y);
                 
@@ -85,27 +77,30 @@ public class FXPlay extends Application
                 c3.setCenterX(x);c3.setCenterY(y);                
                 
                 line2.setEndX(x);line2.setEndY(y);
+                textNugget.setText("x: " + x);
             }
         }.start();
 
         theStage.show();
-        System.out.println("Shown");
     }
     
-    private void drawBackground(GraphicsContext gc) {
-    	
+    private Line getGraphNodeLine(int fromX, int fromY, int toX, int toY) {
+    	Line line = new Line(fromX, fromY, toX, toY);
+        line.setStrokeWidth(2.3);
+        line.setStroke(Color.GRAY);        
+        return line;
     }
-    
+   
     private Circle getGraphNode() {    	
-        Circle c = new Circle();
+        Circle circle = new Circle();
         int circleSize = 20;
-        c.setCenterX(256.0);
-        c.setCenterY(256.0);
-        c.setRadius(circleSize);
-        c.setFill(STANDARD_BLUE);
-        c.setCache(true);
-        c.setStrokeWidth(3.3);
-        c.setStroke(Color.GRAY);
-        return c;
+        circle.setCenterX(256.0);
+        circle.setCenterY(256.0);
+        circle.setRadius(circleSize);
+        circle.setFill(ApplicationColors.STANDARD_BLUE);
+        circle.setCache(true);
+        circle.setStrokeWidth(3.3);
+        circle.setStroke(Color.GRAY);
+        return circle;
     }
 }
