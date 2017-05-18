@@ -52,19 +52,11 @@ public class FXPlay extends Application {
         Circle c3 = getGraphNode();
         root.getChildren().add(c3);
                 
-        TextNugget appendingTextNugget = new TextNugget(40, 40, "Appending", 26, 3, 14);
-        root.getChildren().add(appendingTextNugget.getGroup());
-
-        TextNugget settingTextNugget = new TextNugget(40, 190, "Setting", 22, 1, 12);
-        settingTextNugget.setColor(ApplicationColors.STANDARD_LIGHT_GRAY);
-        root.getChildren().add(settingTextNugget.getGroup());
-
-        TextNugget noTitleTextNugget = new TextNugget(40, 260, null, 22, 1, 12);
-        noTitleTextNugget.setColor(ApplicationColors.STANDARD_GREEN);
-        root.getChildren().add(noTitleTextNugget.getGroup());
-
-        settingTextNugget.setText("Some Text");
-        noTitleTextNugget.setText("Without a title");
+        TextNuggetStack textStack = new TextNuggetStack();
+        textStack.initStack("top", "middle", "bottom");
+        textStack.addStack(root);
+        textStack.setText("middle", "Some Text");
+        textStack.setText("bottom", "Without a title");
 
         final long startNanoTime = System.nanoTime();
 
@@ -88,7 +80,7 @@ public class FXPlay extends Application {
                 c3.setCenterX(x);c3.setCenterY(y);                
                 
                 line2.setEndX(x);line2.setEndY(y);
-                appendingTextNugget.appendText("x: " + x);
+                textStack.appendText("top", "x: " + x);
             }
         }.start();
 

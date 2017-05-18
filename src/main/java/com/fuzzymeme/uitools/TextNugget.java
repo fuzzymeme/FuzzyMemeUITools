@@ -15,7 +15,9 @@ import javafx.scene.text.Text;
 
 /**
  * 
- * TODO Need to adjust x and rectX - the actual position will be left of x due to padding
+ * TODO 
+ * Need to adjust x and rectX - the actual position will be left of x due to padding
+ * Use a scratch pad Text object for getting height etc rather than monkeying around with real text objects
  *
  */
 public class TextNugget {
@@ -25,15 +27,24 @@ public class TextNugget {
 	private double rectWidth = 0;
 	private double rectHeight = 0;
 	private int xPadding = 10;
+	private double singleLineHeight;
+	private double stringHeight;
+	private double rectX;
+	private double yPadding;
+	private boolean initialised = false;
+	
 	private String title = null;
 	private final Text titleText;
 	private Line titleLine = null;
+	
 	private final Text messageText;
 	private int numOfLinesVisible = 1;
 	private int numOfCharactersWide = 12;
 	private Color foregroundColor = ApplicationColors.STANDARD_BLUE;
-	private TextNuggetUtils textNuggetUtils = new TextNuggetUtils();
+	
 	private List<String> visibleLines = new LinkedList<>();
+	private TextNuggetUtils textNuggetUtils = new TextNuggetUtils();
+
 	
 	public TextNugget(int x, int y, String title, int fontSize, final int numOfLinesVisible, final int numOfCharactersWide) {
 		this.x = x; 
@@ -47,23 +58,30 @@ public class TextNugget {
 		this.numOfCharactersWide = numOfCharactersWide;
 	}
 	
+	public void init() {
+        singleLineHeight = getLineHeightFor(messageText, "Text to calc line height Myqj");
+        
+        double stringWidth = getLineWidthFor(messageText, getStringToFillNugget());
+        stringHeight = getLineHeightFor(messageText, getStringToFillNugget());
+        
+        yPadding = messageText.getFont().getSize() / 4;
+        rectX = x - xPadding;
+        
+        rectWidth = stringWidth + xPadding * 2;
+        rectHeight = stringHeight + yPadding * 2;
+        initialised = true;
+	}
+	
 	public Group getGroup() {
 		
 		Group group = new Group();
 		
+		if(!initialised) {
+			init();
+		}
+		
 		setUpTitleText();
 						
-        final double singleLineHeight = getLineHeightFor(messageText, "Text to calc line height Myqj");
-        		        
-        double stringWidth = getLineWidthFor(messageText, getStringToFillNugget());
-        final double stringHeight = getLineHeightFor(messageText, getStringToFillNugget());
-        
-        double yPadding = messageText.getFont().getSize() / 4;
-        int rectX = x - xPadding;
-        
-        rectWidth = stringWidth + xPadding * 2;
-        rectHeight = stringHeight + yPadding * 2;
-        
         Rectangle r = getRectangle(singleLineHeight, stringHeight, rectX, yPadding);
 
         group.getChildren().add(r);
@@ -74,6 +92,10 @@ public class TextNugget {
        
         return group;
 	}
+	
+	public double getHeight() {
+		return rectHeight;
+	}
 
 	private double getLineWidthFor(Text text, String givenString) {
 		text.setText(givenString);
@@ -82,10 +104,12 @@ public class TextNugget {
 	
 	private double getLineHeightFor(Text text, String givenString) {
 		text.setText(givenString);
-        return messageText.getLayoutBounds().getHeight();
+        double boundsHeight = messageText.getLayoutBounds().getHeight();
+		text.setText("");
+		return boundsHeight;
 	}
 	
-	private void addTitleIfPresent(Group group, double singleLineHeight, double yPadding, int rectX) {
+	private void addTitleIfPresent(Group group, double singleLineHeight, double yPadding, double rectX) {
 		if(title != null) {
 			messageText.setY(messageText.getY() + singleLineHeight);
 			
@@ -95,7 +119,7 @@ public class TextNugget {
 		}
 	}
 
-	private Rectangle getRectangle(final double singleLineHeight, final double stringHeight, int rectX,  double yPadding) {
+	private Rectangle getRectangle(final double singleLineHeight, final double stringHeight, double rectX,  double yPadding) {
 		
 		Rectangle r = new Rectangle();
 		r.setStroke(foregroundColor);
