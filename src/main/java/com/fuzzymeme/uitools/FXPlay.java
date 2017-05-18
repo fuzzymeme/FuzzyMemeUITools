@@ -56,7 +56,7 @@ public class FXPlay extends Application {
         root.getChildren().add(appendingTextNugget.getGroup());
 
         TextNugget settingTextNugget = new TextNugget(40, 190, "Setting", 22, 1, 12);
-        settingTextNugget.setColor(ApplicationColors.STANDARD_YELLOW);
+        settingTextNugget.setColor(ApplicationColors.STANDARD_LIGHT_GRAY);
         root.getChildren().add(settingTextNugget.getGroup());
 
         TextNugget noTitleTextNugget = new TextNugget(40, 260, null, 22, 1, 12);
