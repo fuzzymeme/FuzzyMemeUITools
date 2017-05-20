@@ -13,22 +13,26 @@ public class GridBackground {
 	private List<Line> horizontalLines = new ArrayList<>(10);
 	private Color gridlineColor = new Color(0.30, 0.30, 0.30, 0.50);
 	
-
-	public GridBackground(final int width, final int height) {
-		
+	public GridBackground(final int width, final int height) {	
 		int step = 56;
-		for(int i = 0; i < 10; i++) {
+		// Vertical
+		int i = 0;
+		while(i * step < width) {
 			Line line = new Line(i * step, 0, i * step, height);
 			line.setStrokeWidth(1.8);
 			line.setStroke(gridlineColor);
 			verticalLines.add(line);
+			i++;
 		}
 		
-		for(int i = 0; i < 10; i++) {
+		// Horizontal
+		i = 0;
+		while(i * step < width) {
 			Line line = new Line(0, i * step, width, i * step);
 			line.setStrokeWidth(1.8);
 			line.setStroke(gridlineColor);
 			horizontalLines.add(line);
+			i++;
 		}
 	}
 	
