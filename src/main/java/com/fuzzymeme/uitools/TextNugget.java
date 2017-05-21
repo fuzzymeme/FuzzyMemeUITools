@@ -22,8 +22,8 @@ import javafx.scene.text.Text;
  */
 public class TextNugget {
 	
-	private int x = 0; 
-	private int y = 0;
+	private double x = 0; 
+	private double y = 0;
 	private double rectWidth = 0;
 	private double rectHeight = 0;
 	private int xPadding = 10;
@@ -46,7 +46,7 @@ public class TextNugget {
 	private TextNuggetUtils textNuggetUtils = new TextNuggetUtils();
 
 	
-	public TextNugget(int x, int y, String title, int fontSize, final int numOfLinesVisible, final int numOfCharactersWide) {
+	public TextNugget(double x, double y, String title, int fontSize, final int numOfLinesVisible, final int numOfCharactersWide) {
 		this.x = x; 
 		this.y = y;
 		this.title = title;
@@ -59,6 +59,9 @@ public class TextNugget {
 	}
 	
 	public void init() {
+		if(initialised) {
+			return;
+		}
         singleLineHeight = getLineHeightFor(messageText, "Text to calc line height Myqj");
         
         double stringWidth = getLineWidthFor(messageText, getStringToFillNugget());
@@ -76,9 +79,7 @@ public class TextNugget {
 		
 		Group group = new Group();
 		
-		if(!initialised) {
-			init();
-		}
+		init();
 		
 		setUpTitleText();
 						
@@ -96,6 +97,10 @@ public class TextNugget {
 	public double getHeight() {
 		return rectHeight;
 	}
+	
+	public String getTitle() {
+		return title;
+	}
 
 	private double getLineWidthFor(Text text, String givenString) {
 		text.setText(givenString);
@@ -111,7 +116,8 @@ public class TextNugget {
 	
 	private void addTitleIfPresent(Group group, double singleLineHeight, double yPadding, double rectX) {
 		if(title != null) {
-			messageText.setY(messageText.getY() + singleLineHeight);
+//			messageText.setY(messageText.getY() + singleLineHeight);
+			messageText.setY(y + singleLineHeight);
 			
 			double titleY = y + yPadding;
 			titleLine = getTitleLine(rectX, titleY, rectX + rectWidth, titleY);

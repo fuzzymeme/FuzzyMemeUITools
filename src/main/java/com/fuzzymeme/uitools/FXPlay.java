@@ -10,12 +10,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
+import com.fuzzymeme.uitools.logger.LoggerKey;
+
 import javafx.animation.AnimationTimer;
 
 public class FXPlay extends Application {
 	
 	private final int canvasHeight = 512;
 	private final int canvasWidth = 512;
+	
+	private enum LogKey implements LoggerKey {
+		TOP, MIDDLE, BOTTOM
+	};
 	
 	public static void main(String[] args) {
         launch(args);
@@ -52,11 +58,11 @@ public class FXPlay extends Application {
         Circle c3 = getGraphNode();
         root.getChildren().add(c3);
                 
-        TextNuggetStack textStack = new TextNuggetStack();
-        textStack.initStack("top", "middle", "bottom");
+        TextNuggetStack textStack = new TextNuggetStack(root);
+        textStack.initStack(LogKey.TOP, LogKey.MIDDLE, LogKey.BOTTOM);
         textStack.addStack(root);
-        textStack.setText("middle", "Some Text");
-        textStack.setText("bottom", "Without a title");
+        textStack.setText(LogKey.MIDDLE, "Some Text");
+        textStack.setText(LogKey.BOTTOM, "Without a title");
 
         final long startNanoTime = System.nanoTime();
 
@@ -80,7 +86,7 @@ public class FXPlay extends Application {
                 c3.setCenterX(x);c3.setCenterY(y);                
                 
                 line2.setEndX(x);line2.setEndY(y);
-                textStack.appendText("top", "x: " + x);
+                textStack.setText(LogKey.TOP, "x: " + x);
             }
         }.start();
 
